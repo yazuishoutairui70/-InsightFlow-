@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const template=await readFile(new URL('../worker/index.js',import.meta.url),'utf8');
-const source=template.replace('__INSIGHTFLOW_ASSETS__',JSON.stringify({'/index.html':'<h1>InsightFlow</h1>','/ai.html':'<h1>Upload</h1>'}));
+const source=template.replace('__INSIGHTFLOW_ASSETS__',JSON.stringify({'/index.html':'<h1>InsightFlow</h1>','/ai.html':'<h1>Upload</h1>','/collector.html':'<h1>Collector</h1>'}));
 const worker=(await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`)).default;
 function request({name='测试品牌',notes='这是一段用户提供的产品与评论材料。'.repeat(8),files=[],consent='yes'}={}){
   const form=new FormData();form.set('name',name);form.set('category','brand');form.set('notes',notes);form.set('consent',consent);
@@ -17,6 +17,8 @@ test('serves UI but blocks unauthenticated API requests',async()=>{
   assert.match(await page.text(),/Upload/);
   const denied=await worker.fetch(new Request('https://site.test/api/analyze',{method:'POST'}),{GEMINI_API_KEY:'test'});
   assert.equal(denied.status,401);
+  const collector=await worker.fetch(new Request('https://site.test/collector'),{});
+  assert.match(await collector.text(),/Collector/);
 });
 
 test('rejects missing key, missing consent, unsupported files and weak input',async()=>{

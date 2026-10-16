@@ -42,6 +42,7 @@ function sidebar(r){
   return `<aside class="sidebar ${state.menu?'open':''}">
     <div class="brand" role="button" tabindex="0" data-go="projects"><span class="brand-mark"><i></i><i></i><i></i><i></i></span><span><strong>InsightFlow</strong><small>AI 竞品拆解助手</small></span></div>
     <a class="new-side" href="/ai">${icon('spark',18)} 真实 AI 拆解 <span>↗</span></a>
+    <a class="nav-item" href="/collector">⌁ <span>本地评论采集</span></a>
     <div class="nav-label">工作台</div>
     ${[['projects','项目中心','grid'],['new','新建分析','plus'],['templates','分析模板','layers'],['sources','资料说明','file']].map(([id,name,glyph])=>link(id,`${icon(glyph)}<span>${name}</span>`,`nav-item ${r.page===id?'active':''}`)).join('')}
     <div class="side-divider"></div><div class="nav-label">最近项目</div>

@@ -5,7 +5,7 @@ const MAX_FILES = 4;
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 8 * 1024 * 1024;
 const MAX_NOTES = 16000;
-const ALLOWED = new Set(['application/pdf','image/png','image/jpeg','image/webp','text/plain','text/markdown','text/csv','application/csv']);
+const ALLOWED = new Set(['application/pdf','image/png','image/jpeg','image/webp','text/plain','text/markdown','text/csv','application/csv','application/json','application/x-ndjson']);
 const CATEGORIES = new Set(['shopping','brand','offline']);
 const lenses = {
   shopping: '购物 App：定位/用户任务、供给结构、搜索与推荐、内容信任、转化与履约、留存。',
@@ -59,8 +59,8 @@ async function analyze(request,env){
   for(const file of uploads){
     if(file.size>MAX_FILE_BYTES)return textError(`文件「${file.name}」超过 4 MB。`);
     total+=file.size;if(total>MAX_TOTAL_BYTES)return textError('文件总量不能超过 8 MB。');
-    const mime=file.type||({'.md':'text/markdown','.csv':'text/csv','.txt':'text/plain'}[file.name.match(/\.[^.]+$/)?.[0].toLowerCase()]||'');
-    if(!ALLOWED.has(mime))return textError(`文件「${file.name}」的格式暂不支持。请使用 PDF、图片、TXT、CSV 或 Markdown。`);
+    const mime=file.type||({'.md':'text/markdown','.csv':'text/csv','.txt':'text/plain','.json':'application/json','.jsonl':'application/x-ndjson'}[file.name.match(/\.[^.]+$/)?.[0].toLowerCase()]||'');
+    if(!ALLOWED.has(mime))return textError(`文件「${file.name}」的格式暂不支持。请使用 PDF、图片、TXT、CSV、JSON、JSONL 或 Markdown。`);
     const id=`S${sources.length+1}`;
     const bytes=new Uint8Array(await file.arrayBuffer());
     sources.push({id,name:file.name.slice(0,160),type:mime,size:file.size});
@@ -98,7 +98,7 @@ export default {
       return analyze(request,env);
     }
     if(request.method!=='GET'&&request.method!=='HEAD')return new Response('Method not allowed',{status:405});
-    const asset=ASSETS[path==='/'?'/index.html':path==='/ai'?'/ai.html':path];
+    const asset=ASSETS[path==='/'?'/index.html':path==='/ai'?'/ai.html':path==='/collector'?'/collector.html':path];
     if(asset===undefined)return new Response('Not found',{status:404});
     const type=path.endsWith('.css')?'text/css':path.endsWith('.js')?'text/javascript':'text/html';
     return new Response(request.method==='HEAD'?null:asset,{headers:{'content-type':`${type}; charset=utf-8`,'cache-control':'no-store','x-content-type-options':'nosniff'}});

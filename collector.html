@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d2344"><title>本地评论采集 · InsightFlow</title>
+  <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/ai.css"><link rel="stylesheet" href="/collector.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar ai-sidebar">
+      <a class="brand" href="/"><span class="brand-mark"><i></i><i></i><i></i><i></i></span><span><strong>InsightFlow</strong><small>AI 竞品拆解助手</small></span></a>
+      <a class="new-side ai-side-primary" href="/ai">✦ 真实 AI 拆解 <span>↗</span></a>
+      <div class="nav-label">工作台</div>
+      <a class="nav-item" href="/ai">✦　上传材料分析</a>
+      <a class="nav-item active" href="/collector">⌁　本地评论采集</a>
+      <a class="nav-item" href="/#/projects">▦　预置案例演示</a>
+      <a class="nav-item" href="/#/templates">▤　分析模板</a>
+      <div class="side-divider"></div><div class="nav-label">隐私边界</div>
+      <div class="ai-side-note"><b>本地浏览器 · 本地登录</b><p>InsightFlow 不读取平台账号、Cookie 或密码，只接收你主动导入的导出文件。</p></div>
+      <div class="side-bottom"><div class="side-bottom-line">⌁　本地采集 · 你掌控数据</div><small>小样本研究，非批量抓取</small></div>
+    </aside>
+    <div class="main-shell">
+      <header class="topbar"><div class="breadcrumbs"><a href="/#/projects">项目中心</a><span>›</span><b>本地评论采集</b></div><div class="top-actions"><span class="demo-pill ai-live-pill">● 只在你的电脑运行</span><span class="avatar">IF</span></div></header>
+      <main class="content collector-content">
+        <section class="collector-hero"><div><div class="eyebrow">LOCAL COLLECTION / MEDIACRAWLER</div><h1>采集公开评论，再让 AI 做真正的拆解。</h1><p>这里生成小样本、低频的本地采集指令。扫码、登录与导出都在你的电脑完成；InsightFlow 不会碰你的平台账号。</p></div><div class="collector-hero-flow"><span>关键词</span><i>→</i><span>本地导出</span><i>→</i><span>AI 分析</span></div></section>
+        <section class="collector-grid">
+          <form id="collector-form" class="collector-card">
+            <div class="collector-title"><span>01</span><div><h2>生成采集指令</h2><p>按 MediaCrawler 当前命令行参数生成；默认只抓少量公开内容。</p></div></div>
+            <div class="collector-fields">
+              <label>平台<select name="platform"><option value="xhs">小红书</option><option value="dy">抖音</option><option value="bili">B 站</option><option value="wb">微博</option><option value="zhihu">知乎</option><option value="tieba">百度贴吧</option></select></label>
+              <label>采集方式<select name="mode"><option value="search">关键词搜索</option><option value="detail">指定帖子链接</option></select></label>
+              <label class="collector-wide"><span id="query-label">关键词</span><input name="query" required maxlength="200" placeholder="例如：Manner Coffee 体验 / 优衣库质量 / 小红书 搜索"></label>
+              <label>最多内容数<input name="posts" type="number" min="1" max="20" value="8"></label>
+              <label>每条内容最多评论<input name="comments" type="number" min="1" max="30" value="15"></label>
+            </div>
+            <label class="collector-check"><input type="checkbox" name="subcomments"><span>同时收集二级评论 <small>默认关闭，避免无意义扩大样本</small></span></label>
+            <label class="collector-check"><input type="checkbox" name="confirm" required><span>我确认仅用于个人学习/面试展示，采集公开内容、小样本、低频，不绕过登录验证、验证码或平台限制。</span></label>
+            <button class="btn primary" type="submit">生成本地采集指令　→</button>
+          </form>
+          <aside class="collector-steps">
+            <span class="eyebrow">FIRST TIME SETUP</span><h2>第一次只要做一次</h2>
+            <ol><li><b>安装工具</b><span>安装 Python 环境管理工具 uv 和 Node.js。</span></li><li><b>获取 MediaCrawler</b><span>从原仓库克隆后执行 <code>uv sync</code>。</span></li><li><b>本地扫码登录</b><span>运行下方指令，在打开的浏览器里自行确认登录。</span></li><li><b>导出 CSV / JSONL</b><span>回到本页导入，内容自动带进 AI 分析页。</span></li></ol>
+            <a class="collector-source" href="https://github.com/NanmiCoder/MediaCrawler" target="_blank" rel="noreferrer">查看 MediaCrawler 原项目与许可证 ↗</a>
+          </aside>
+        </section>
+        <section id="command-section" class="collector-output collector-hidden">
+          <div class="collector-output-head"><div><span class="eyebrow">YOUR LOCAL COMMAND</span><h2>在 MediaCrawler 文件夹中运行</h2><p>请先确认仓库已安装完依赖。运行后按提示扫码；不要填 Cookie，也不需要代理。</p></div><button id="copy-command" class="btn outline" type="button">复制命令</button></div>
+          <pre><code id="command-output"></code></pre>
+          <div class="collector-command-note">建议：第一次先保持默认小样本。结果只用于研究，结论仍需回看原帖和评论语境核验。</div>
+        </section>
+        <section class="collector-import-card">
+          <div><span class="eyebrow">IMPORT TO INSIGHTFLOW</span><h2>导入你的导出文件</h2><p>支持 MediaCrawler 导出的 CSV、JSON、JSONL、TXT 或 Markdown。文件会先在当前浏览器读取，再带到 AI 分析页；最多导入 15,000 个字符，超出部分会按行截取。</p></div>
+          <label class="collector-import-button">选择导出文件<input id="collector-file" type="file" accept=".csv,.json,.jsonl,.txt,.md,text/csv,application/json,application/x-ndjson,text/plain,text/markdown"></label>
+        </section>
+        <div id="collector-message" class="collector-message collector-hidden" role="alert"></div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="/collector.js"></script>
+</body>
+</html>

@@ -5,6 +5,14 @@ let payload=null,tab='overview';
 function show(view){for(const id of ['input-view','loading-view','result-view'])document.getElementById(id).classList.toggle('ai-hidden',id!==view);window.scrollTo(0,0);}
 function error(message){const box=$('#error-box');box.textContent=message;box.classList.remove('ai-hidden');setTimeout(()=>box.classList.add('ai-hidden'),7000);}
 function fileSummary(){const files=[...fileInput.files];fileList.innerHTML=files.map(f=>`<span class="ai-file-pill ${f.size>4*1024*1024?'error':''}">${esc(f.name)} · ${(f.size/1024/1024).toFixed(2)} MB</span>`).join('');}
+const importedCollector=sessionStorage.getItem('insightflow.collector.import');
+if(importedCollector){
+  try{
+    const data=JSON.parse(importedCollector);
+    form.elements.notes.value=data.text||'';
+    setTimeout(()=>error(`已导入 ${data.platformLabel||'本地社媒采集'} 的 ${data.fileName||'评论材料'}；请补充产品名称后开始分析。`),250);
+  }catch{}finally{sessionStorage.removeItem('insightflow.collector.import');}
+}
 fileInput.addEventListener('change',fileSummary);
 const drop=$('.upload-zone');
 for(const type of ['dragenter','dragover'])drop.addEventListener(type,e=>{e.preventDefault();drop.classList.add('drag-over');});

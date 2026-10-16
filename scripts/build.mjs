@@ -2,7 +2,7 @@ import {readFile,writeFile,mkdir,rm} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
 const root=resolve(import.meta.dirname,'..');
 const assets={};
-for(const name of ['index.html','styles.css','data.js','app.js','ai.html','ai.css','ai.js'])assets['/'+name]=await readFile(join(root,name),'utf8');
+for(const name of ['index.html','styles.css','data.js','app.js','ai.html','ai.css','ai.js','collector.html','collector.css','collector.js'])assets['/'+name]=await readFile(join(root,name),'utf8');
 const worker=await readFile(join(root,'worker/index.js'),'utf8');
 if(!worker.includes('__INSIGHTFLOW_ASSETS__'))throw Error('Missing asset placeholder');
 const dist=join(root,'dist');
