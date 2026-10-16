@@ -1,3 +1,4 @@
+import './nav.js';
 const $=selector=>document.querySelector(selector);
 const form=$('#collector-form'),queryLabel=$('#query-label'),commandSection=$('#command-section'),commandOutput=$('#command-output'),message=$('#collector-message');
 const platformLabels={xhs:'小红书',dy:'抖音',bili:'B 站',wb:'微博',zhihu:'知乎',tieba:'百度贴吧'};

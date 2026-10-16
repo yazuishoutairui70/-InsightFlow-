@@ -98,7 +98,7 @@ export default {
       return analyze(request,env);
     }
     if(request.method!=='GET'&&request.method!=='HEAD')return new Response('Method not allowed',{status:405});
-    const asset=ASSETS[path==='/'?'/index.html':path==='/ai'?'/ai.html':path==='/collector'?'/collector.html':path];
+    const asset=ASSETS[path==='/'||path==='/ai'?'/ai.html':path==='/collector'?'/collector.html':path==='/history'?'/history.html':path];
     if(asset===undefined)return new Response('Not found',{status:404});
     const type=path.endsWith('.css')?'text/css':path.endsWith('.js')?'text/javascript':'text/html';
     return new Response(request.method==='HEAD'?null:asset,{headers:{'content-type':`${type}; charset=utf-8`,'cache-control':'no-store','x-content-type-options':'nosniff'}});

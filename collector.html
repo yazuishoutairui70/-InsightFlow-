@@ -7,20 +7,9 @@
 </head>
 <body>
   <div class="app-shell">
-    <aside class="sidebar ai-sidebar">
-      <a class="brand" href="/"><span class="brand-mark"><i></i><i></i><i></i><i></i></span><span><strong>InsightFlow</strong><small>AI 竞品拆解助手</small></span></a>
-      <a class="new-side ai-side-primary" href="/ai">✦ 真实 AI 拆解 <span>↗</span></a>
-      <div class="nav-label">工作台</div>
-      <a class="nav-item" href="/ai">✦　上传材料分析</a>
-      <a class="nav-item active" href="/collector">⌁　本地评论采集</a>
-      <a class="nav-item" href="/#/projects">▦　预置案例演示</a>
-      <a class="nav-item" href="/#/templates">▤　分析模板</a>
-      <div class="side-divider"></div><div class="nav-label">隐私边界</div>
-      <div class="ai-side-note"><b>本地浏览器 · 本地登录</b><p>InsightFlow 不读取平台账号、Cookie 或密码，只接收你主动导入的导出文件。</p></div>
-      <div class="side-bottom"><div class="side-bottom-line">⌁　本地采集 · 你掌控数据</div><small>小样本研究，非批量抓取</small></div>
-    </aside>
+    <aside id="site-nav" class="sidebar ai-sidebar"></aside>
     <div class="main-shell">
-      <header class="topbar"><div class="breadcrumbs"><a href="/#/projects">项目中心</a><span>›</span><b>本地评论采集</b></div><div class="top-actions"><span class="demo-pill ai-live-pill">● 只在你的电脑运行</span><span class="avatar">IF</span></div></header>
+      <header id="site-topbar" class="topbar"></header>
       <main class="content collector-content">
         <section class="collector-hero"><div><div class="eyebrow">LOCAL COLLECTION / MEDIACRAWLER</div><h1>采集公开评论，再让 AI 做真正的拆解。</h1><p>这里生成小样本、低频的本地采集指令。扫码、登录与导出都在你的电脑完成；InsightFlow 不会碰你的平台账号。</p></div><div class="collector-hero-flow"><span>关键词</span><i>→</i><span>本地导出</span><i>→</i><span>AI 分析</span></div></section>
         <section class="collector-grid">
@@ -39,7 +28,7 @@
           </form>
           <aside class="collector-steps">
             <span class="eyebrow">FIRST TIME SETUP</span><h2>第一次只要做一次</h2>
-            <ol><li><b>安装工具</b><span>安装 Python 环境管理工具 uv 和 Node.js。</span></li><li><b>获取 MediaCrawler</b><span>从原仓库克隆后执行 <code>uv sync</code>。</span></li><li><b>本地扫码登录</b><span>运行下方指令，在打开的浏览器里自行确认登录。</span></li><li><b>导出 CSV / JSONL</b><span>回到本页导入，内容自动带进 AI 分析页。</span></li></ol>
+            <ol><li><b>安装工具</b><span>安装 uv、Node.js 和 Git。</span></li><li><b>获取 MediaCrawler</b><span>从原仓库克隆后执行 <code>uv sync</code>。</span></li><li><b>开启 Chrome 调试</b><span>访问 <code>chrome://inspect/#remote-debugging</code>，允许本机调试并确认端口 9222 运行中。</span></li><li><b>运行并登录</b><span>在 PowerShell 中进入 MediaCrawler 目录，运行命令并自行扫码。</span></li><li><b>导出 CSV / JSONL</b><span>在 <code>data</code> 目录找到文件，回本页导入。</span></li></ol>
             <a class="collector-source" href="https://github.com/NanmiCoder/MediaCrawler" target="_blank" rel="noreferrer">查看 MediaCrawler 原项目与许可证 ↗</a>
           </aside>
         </section>

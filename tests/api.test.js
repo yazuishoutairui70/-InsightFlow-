@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const template=await readFile(new URL('../worker/index.js',import.meta.url),'utf8');
-const source=template.replace('__INSIGHTFLOW_ASSETS__',JSON.stringify({'/index.html':'<h1>InsightFlow</h1>','/ai.html':'<h1>Upload</h1>','/collector.html':'<h1>Collector</h1>'}));
+const source=template.replace('__INSIGHTFLOW_ASSETS__',JSON.stringify({'/ai.html':'<h1>Upload</h1>','/collector.html':'<h1>Collector</h1>','/history.html':'<h1>History</h1>'}));
 const worker=(await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`)).default;
 function request({name='测试品牌',notes='这是一段用户提供的产品与评论材料。'.repeat(8),files=[],consent='yes'}={}){
   const form=new FormData();form.set('name',name);form.set('category','brand');form.set('notes',notes);form.set('consent',consent);
@@ -19,6 +19,11 @@ test('serves UI but blocks unauthenticated API requests',async()=>{
   assert.equal(denied.status,401);
   const collector=await worker.fetch(new Request('https://site.test/collector'),{});
   assert.match(await collector.text(),/Collector/);
+  const home=await worker.fetch(new Request('https://site.test/'),{});
+  assert.match(await home.text(),/Upload/);
+  const history=await worker.fetch(new Request('https://site.test/history'),{});
+  assert.match(await history.text(),/History/);
+  assert.equal((await worker.fetch(new Request('https://site.test/data.js'),{})).status,404);
 });
 
 test('rejects missing key, missing consent, unsupported files and weak input',async()=>{
