@@ -41,7 +41,7 @@ function sidebar(r){
   const c=activeCase();
   return `<aside class="sidebar ${state.menu?'open':''}">
     <div class="brand" role="button" tabindex="0" data-go="projects"><span class="brand-mark"><i></i><i></i><i></i><i></i></span><span><strong>InsightFlow</strong><small>AI 竞品拆解助手</small></span></div>
-    <button class="new-side" data-go="new">${icon('plus',18)} 新建分析 <span>＋</span></button>
+    <a class="new-side" href="/ai">${icon('spark',18)} 真实 AI 拆解 <span>↗</span></a>
     <div class="nav-label">工作台</div>
     ${[['projects','项目中心','grid'],['new','新建分析','plus'],['templates','分析模板','layers'],['sources','资料说明','file']].map(([id,name,glyph])=>link(id,`${icon(glyph)}<span>${name}</span>`,`nav-item ${r.page===id?'active':''}`)).join('')}
     <div class="side-divider"></div><div class="nav-label">最近项目</div>
@@ -60,14 +60,14 @@ const pageHead = (eyebrow,title,desc,extra='')=>`<div class="page-head"><div><di
 
 function projects(){
   return `${pageHead('PROJECT SPACE','把竞品信息，变成可用判断。','从三个预置案例出发，体验一键拆解、双语评论聚类和结论报告。',`<button class="btn primary" data-go="new">${icon('plus',17)} 新建分析</button>`)}
-  <div class="hero-strip"><div><span class="hero-kicker">INSIGHTFLOW / DEMO</span><h2>不止看到“做了什么”<br>更要读懂“为什么有效”。</h2><p>沿着事实 → 动因 → 效果假设 → 可迁移结论，让每一次竞品拆解有清晰落点。</p><button class="btn light" data-go="new">开始体验 ${icon('arrow',17)}</button></div><div class="hero-graphic" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-core">IF</div><span class="orb o1">事实</span><span class="orb o2">洞察</span><span class="orb o3">行动</span></div></div>
+  <div class="hero-strip"><div><span class="hero-kicker">INSIGHTFLOW / LIVE AI</span><h2>不止看到“做了什么”<br>更要读懂“为什么有效”。</h2><p>上传你的材料，真正调用模型生成证据驱动的拆解；下方三个案例保留为可点的演示样本。</p><a class="btn light" href="/ai">上传材料，开始真实分析 ${icon('arrow',17)}</a></div><div class="hero-graphic" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-core">IF</div><span class="orb o1">事实</span><span class="orb o2">洞察</span><span class="orb o3">行动</span></div></div>
   <div class="section-heading"><div><h2>案例项目 <span class="count">03</span></h2><p>选择一个案例进入完整分析工作台</p></div><span class="subtle">三种产品形态 · 同一条分析主线</span></div>
   <div class="project-grid">${cases.map((c,i)=>`<article class="project-card"><div class="project-card-top">${caseIcon(c)}<span class="chip">${esc(c.kind)}</span></div><h3>${esc(c.name)}</h3><p>${esc(c.subtitle)}</p><div class="project-tags">${c.tags.slice(0,3).map(t=>`<span>${esc(t)}</span>`).join('')}</div><div class="project-footer"><span>${icon('file',15)} ${c.modules.length} 个模块 · ${c.reviews.length} 条合成评论</span>${link(`case/${c.id}/overview`,`${icon('arrow',18)}`,'round-link')}</div></article>`).join('')}</div>
   <div class="principle-row"><div>${icon('target',20)}<b>问题不是必填项</b><span>V1 先给出标准拆解；自定义问题留待下一阶段。</span></div><div>${icon('shield',20)}<b>证据与推断分开</b><span>演示卡片、合成评论和待验证内容都明确标注。</span></div><div>${icon('download',20)}<b>结果可带走</b><span>浏览、复制与导出 Markdown 报告。</span></div></div>`;
 }
 
 function newAnalysis(){
-  return `${pageHead('NEW ANALYSIS','选择一个产品，开始拆解','演示版使用预置案例。无需填写“我要解决的问题”，点击案例即可生成完整分析流程。')}
+  return `${pageHead('NEW ANALYSIS','选择一个产品，开始拆解','这里保留三个预置案例的演示流程。若要分析你自己的资料，请进入真实 AI 拆解。',`<a class="btn primary" href="/ai">${icon('spark',17)} 上传材料分析</a>`)}
   <div class="stepper"><span class="step active"><i>1</i> 选择产品</span><span class="step-line"></span><span class="step"><i>2</i> 查看拆解</span><span class="step-line"></span><span class="step"><i>3</i> 导出报告</span></div>
   <div class="new-layout"><section class="panel"><div class="panel-title"><h2>选择预置案例</h2><span class="chip blue">V1 DEMO</span></div><p class="panel-intro">三类案例对应不同模板。优衣库按“服饰零售品牌”适配品牌模板，不归类为快消品。</p><div class="select-list">${cases.map(c=>`<button class="select-case ${state.selected===c.id?'chosen':''}" data-select="${c.id}">${caseIcon(c)}<span><b>${esc(c.name)}</b><small>${esc(c.template)} · ${esc(c.subtitle)}</small></span><i class="radio"></i></button>`).join('')}</div><div class="new-divider"></div><div class="demo-input"><label>产品名称</label><input value="${esc(byId(state.selected).name)}" readonly aria-label="预置案例名称" /><span>演示版仅提供三个预置项目。自由输入和在线采集将在后续版本开放。</span></div><button class="btn primary wide" data-action="start">一键生成拆解 ${icon('arrow',18)}</button></section>
   <aside class="new-aside"><div class="aside-glow">${icon('spark',28)}</div><div class="eyebrow">WHAT YOU WILL GET</div><h2>从观察到行动的一份完整答案</h2><p>不是把资料堆成报告，而是用一致的逻辑拆开产品价值。</p><div class="result-list"><div><span>01</span> 定位与场景</div><div><span>02</span> 六个关键模块</div><div><span>03</span> 中英文评论洞察</div><div><span>04</span> 可迁移的策略卡片</div><div><span>05</span> 可导出的分析报告</div></div><div class="new-note">${icon('info',18)} 本版数据由我们编写，用于验证产品体验，不可当作真实市场结论。</div></aside></div>`;

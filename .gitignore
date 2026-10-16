@@ -152,6 +152,10 @@ activemq-data/
 # Environments
 .env
 .envrc
+.env.local
+node_modules/
+.sites-runtime/
+.wrangler/
 .venv
 env/
 venv/

@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const source=await readFile(new URL('../dist/server/index.js',import.meta.url),'utf8');
+const manifest=JSON.parse(await readFile(new URL('../dist/.openai/hosting.json',import.meta.url),'utf8'));
+assert.equal(typeof manifest.project_id,'string');
+assert.ok(!('static' in manifest));
+assert.ok(!source.includes('__INSIGHTFLOW_ASSETS__'));
+const mod=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+assert.equal(typeof mod.default.fetch,'function');
+console.log('Worker artifact is valid');
